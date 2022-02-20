@@ -1,10 +1,8 @@
 import React, { Component } from "react";
-import SimpleStorageContract from "./contracts/SimpleStorage.json";
-import getWeb3 from "./getWeb3";
+import SimpleStorageContract from "../contracts/SimpleStorage.json";
+import getWeb3 from "../getWeb3";
 
-import "./App.css";
-
-class App extends Component {
+export default class Home extends Component {
   state = { storageValue: 0, web3: null, accounts: null, contract: null };
 
   componentDidMount = async () => {
@@ -69,5 +67,3 @@ class App extends Component {
     );
   }
 }
-
-export default App;
