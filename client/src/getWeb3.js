@@ -3,15 +3,12 @@ import Web3 from "web3";
 const getWeb3 = () =>
   new Promise((resolve, reject) => {
     // Wait for loading completion to avoid race conditions with web3 injection timing.
-    window.addEventListener("load", async () => {
+
+    const web3Ethereum = async () => {
       // Modern dapp browsers...
       if (window.ethereum) {
         const web3 = new Web3(window.ethereum);
         try {
-          const account = await window.ethereum.request({
-            method: "eth_accounts",
-          });
-          console.log(account, "acc");
           resolve(web3);
         } catch (error) {
           reject(error);
@@ -33,7 +30,9 @@ const getWeb3 = () =>
         console.log("No web3 instance injected, using Local web3.");
         resolve(web3);
       }
-    });
+    };
+
+    web3Ethereum();
   });
 
 export default getWeb3;

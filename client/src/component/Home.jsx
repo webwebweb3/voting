@@ -15,9 +15,7 @@ const Home = () => {
     setLoading(true);
     try {
       // Get network provider and web3 instance.
-      console.log(11111)
       const web3 = await getWeb3();
-      console.log(33333)
 
       // Use web3 to get the user's accounts.
       const accounts = await web3.eth.getAccounts();
