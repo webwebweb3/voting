@@ -1,3 +1,4 @@
+import { TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import electionContract from "../contracts/Election.json";
 import getWeb3 from "../getWeb3";
@@ -14,7 +15,9 @@ const Home = () => {
         setLoading(true);
         try {
             // Get network provider and web3 instance.
+            console.log(11111);
             const web3 = await getWeb3();
+            console.log(33333);
 
             // Use web3 to get the user's accounts.
             const accounts = await web3.eth.getAccounts();
@@ -33,7 +36,6 @@ const Home = () => {
             // example of interacting with the contract's methods.
             setWeb3(web3);
             setAccounts(accounts[0]);
-            console.log(electionInstance);
             setContract(electionInstance);
             setLoading(false);
         } catch (error) {
@@ -92,13 +94,15 @@ const Home = () => {
                     <div>Loading...</div>
                 ) : (
                     <>
-                        {candidateNumber}
-                        <input
+                        <TextField
+                            label="이름을 입력해주세요."
                             autoFocus
+                            id="outlined-start-adornment"
                             value={name}
                             onChange={onNameChange}
                             placeholder={"이름을 입력해주세요."}
                         />
+                        {candidateNumber}
                         <button onClick={addCandidate}>Add</button>
                     </>
                 )}
