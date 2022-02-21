@@ -11,13 +11,11 @@ const Home = () => {
     const [name, setName] = useState("");
     const [loading, setLoading] = useState(false);
 
-    const fetchData = async () => {
-        setLoading(true);
-        try {
-            // Get network provider and web3 instance.
-            console.log(11111);
-            const web3 = await getWeb3();
-            console.log(33333);
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      // Get network provider and web3 instance.
+      const web3 = await getWeb3();
 
             // Use web3 to get the user's accounts.
             const accounts = await web3.eth.getAccounts();
