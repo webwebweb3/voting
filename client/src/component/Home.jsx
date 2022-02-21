@@ -1,3 +1,4 @@
+import { TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import electionContract from "../contracts/Election.json";
 import getWeb3 from "../getWeb3";
@@ -90,13 +91,15 @@ const Home = () => {
           <div>Loading...</div>
         ) : (
           <>
-            {candidateNumber}
-            <input
+            <TextField
+              label="이름을 입력해주세요."
               autoFocus
+              id="outlined-start-adornment"
               value={name}
               onChange={onNameChange}
               placeholder={"이름을 입력해주세요."}
             />
+              {candidateNumber}
             <button onClick={addCandidate}>Add</button>
           </>
         )}
