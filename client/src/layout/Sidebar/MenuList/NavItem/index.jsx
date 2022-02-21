@@ -1,31 +1,38 @@
-import React from 'react';
-import { forwardRef } from 'react';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { forwardRef } from "react";
+import { Link } from "react-router-dom";
 
-import { ListItemButton, ListItemIcon, ListItemText, Typography } from '@mui/material';
+import {
+    ListItemButton,
+    ListItemIcon,
+    ListItemText,
+    Typography,
+} from "@mui/material";
 
-import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
+import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 
 const NavItem = ({ item, level }) => {
     const Icon = item.icon;
 
     /* Sidebar Icon */
-    const itemIcon = item?.icon ? (
+    const itemIcon = item.icon ? (
         <Icon stroke={1.5} size="34px" style={{ marginLeft: "10px" }} />
     ) : (
         <FiberManualRecordIcon />
     );
 
-    let itemTarget = '_self';
+    let itemTarget = "_self";
     if (item.target) {
-        itemTarget = '_blank';
+        itemTarget = "_blank";
     }
 
     let listItemProps = {
-        component: forwardRef((props, ref) => <Link ref={ref} {...props} to={`${item.url}`} target={itemTarget} />)
+        component: forwardRef((props, ref) => (
+            <Link ref={ref} {...props} to={`${item.url}`} target={itemTarget} />
+        )),
     };
-    if (item?.external) {
-        listItemProps = { component: 'a', href: item.url, target: itemTarget };
+    if (item.external) {
+        listItemProps = { component: "a", href: item.url, target: itemTarget };
     }
 
     return (
@@ -34,16 +41,17 @@ const NavItem = ({ item, level }) => {
             disabled={item.disabled}
             sx={{
                 mb: 0.5,
-                alignItems: 'flex-start',
-                backgroundColor: level > 1 ? 'transparent !important' : 'inherit',
+                alignItems: "flex-start",
+                backgroundColor:
+                    level > 1 ? "transparent !important" : "inherit",
                 py: level > 1 ? 1 : 1.25,
                 pl: `${level * 24}px`,
-                display:"inline-block",
-                marginLeft: "-10px"
+                display: "inline-block",
+                marginLeft: "-10px",
             }}
         >
             <ListItemIcon>
-                {itemIcon} 
+                {itemIcon}
 
                 {/* Sidebar Text */}
                 <ListItemText
@@ -52,7 +60,7 @@ const NavItem = ({ item, level }) => {
                         pr: `${level * 8}px`,
                     }}
                     primary={
-                        <Typography variant='h5' color="inherit">
+                        <Typography variant="h5" color="inherit">
                             {item.title}
                         </Typography>
                     }

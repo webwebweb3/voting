@@ -1,9 +1,10 @@
-import { TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import electionContract from "../contracts/Election.json";
-import getWeb3 from "../getWeb3";
+import electionContract from "../../contracts/Election.json";
+import getWeb3 from "../../getWeb3";
+import { TextField } from "@mui/material";
+import { Button } from "react-bootstrap";
 
-const Home = () => {
+const Voting = () => {
     const [web3, setWeb3] = useState({});
     const [accounts, setAccounts] = useState("");
     const [contract, setContract] = useState({});
@@ -11,11 +12,11 @@ const Home = () => {
     const [name, setName] = useState("");
     const [loading, setLoading] = useState(false);
 
-  const fetchData = async () => {
-    setLoading(true);
-    try {
-      // Get network provider and web3 instance.
-      const web3 = await getWeb3();
+    const fetchData = async () => {
+        setLoading(true);
+        try {
+            // Get network provider and web3 instance.
+            const web3 = await getWeb3();
 
             // Use web3 to get the user's accounts.
             const accounts = await web3.eth.getAccounts();
@@ -34,6 +35,7 @@ const Home = () => {
             // example of interacting with the contract's methods.
             setWeb3(web3);
             setAccounts(accounts[0]);
+            console.log(electionInstance);
             setContract(electionInstance);
             setLoading(false);
         } catch (error) {
@@ -51,7 +53,6 @@ const Home = () => {
         fetchData();
     }, []);
 
-    // 에러 해결 중
     const fetch = async () => {
         console.log(contract);
 
@@ -92,16 +93,21 @@ const Home = () => {
                     <div>Loading...</div>
                 ) : (
                     <>
-                        <TextField
-                            label="이름을 입력해주세요."
-                            autoFocus
-                            id="outlined-start-adornment"
-                            value={name}
-                            onChange={onNameChange}
-                            placeholder={"이름을 입력해주세요."}
-                        />
                         {candidateNumber}
-                        <button onClick={addCandidate}>Add</button>
+                        <TextField
+                            required
+                            name="address"
+                            sx={{ width: "100", displayPrint: "block" }}
+                        />
+                        <Button
+                            onClick={addCandidate}
+                            className="transaction_submit_btn"
+                        >
+                            제출
+                        </Button>
+                        <div>
+                            <div></div>
+                        </div>
                     </>
                 )}
             </>
@@ -109,4 +115,4 @@ const Home = () => {
     }
 };
 
-export default Home;
+export default Voting;
