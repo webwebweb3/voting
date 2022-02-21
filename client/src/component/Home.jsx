@@ -1,155 +1,110 @@
 import React, { useEffect, useState } from "react";
-import SimpleStorageContract from "../contracts/SimpleStorage.json";
+import electionContract from "../contracts/Election.json";
 import getWeb3 from "../getWeb3";
 
 const Home = () => {
-    const [state, setState] = useState({
-        storageValue: 0,
-        web3: null,
-        accounts: null,
-        contract: null,
-    });
-    const [accounts, setAccounts] = useState();
+    const [web3, setWeb3] = useState({});
+    const [accounts, setAccounts] = useState("");
     const [contract, setContract] = useState({});
+    const [candidateNumber, setCandidateNumber] = useState(0);
+    const [name, setName] = useState("");
+    const [loading, setLoading] = useState(false);
+
+    const fetchData = async () => {
+        setLoading(true);
+        try {
+            // Get network provider and web3 instance.
+            const web3 = await getWeb3();
+
+            // Use web3 to get the user's accounts.
+            const accounts = await web3.eth.getAccounts();
+
+            // Get the contract instance.
+            const networkId = await web3.eth.net.getId();
+
+            const deployedNetwork = electionContract.networks[networkId];
+
+            const electionInstance = new web3.eth.Contract(
+                electionContract.abi,
+                deployedNetwork && deployedNetwork.address
+            );
+
+            // Set web3, accounts, and contract to the state, and then proceed with an
+            // example of interacting with the contract's methods.
+            setWeb3(web3);
+            setAccounts(accounts[0]);
+            console.log(electionInstance);
+            setContract(electionInstance);
+            setLoading(false);
+        } catch (error) {
+            // Catch any errors for any of the above operations.
+            alert(
+                `Failed to load web3, accounts, or contract. Check console for details.`
+            );
+            console.error(error);
+        }
+    };
+
+    console.log(contract);
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                // Get network provider and web3 instance.
-                const web3 = await getWeb3();
-
-                // Use web3 to get the user's accounts.
-                const accounts = await web3.eth.getAccounts();
-
-                // Get the contract instance.
-                // get transaction ID
-                const networkId = await web3.eth.net.getId();
-
-                // get transaction ID
-                const deployedNetwork =
-                    SimpleStorageContract.networks[networkId];
-                console.log(deployedNetwork, "ddd");
-                const instance = new web3.eth.Contract(
-                    SimpleStorageContract.abi,
-                    deployedNetwork && deployedNetwork.address
-                );
-                console.log(instance, "in");
-                setContract(instance);
-
-                const runExample = async () => {
-                    // Stores a given value, 5 by default.
-
-                    await contract.methods.set(5).send({ from: accounts[0] });
-
-                    // Get the value from the contract to prove it worked.
-                    const response = await contract.methods.get().call();
-
-                    // Update state with the result.
-                    setState({ ...state, storageValue: response });
-                };
-
-                // Set web3, accounts, and contract to the state, and then proceed with an
-                // example of interacting with the contract's methods.
-                setState(
-                    { ...state, web3, accounts, contract: instance },
-                    runExample()
-                );
-                console.log(state);
-            } catch (error) {
-                // Catch any errors for any of the above operations.
-                alert(
-                    `Failed to load web3, accounts, or contract. Check console for details.`
-                );
-                console.error(error);
-            }
-        };
         fetchData();
     }, []);
-    console.log(contract, "con");
-    if (!state.web3) {
-        return <div>Loading Web3, accounts, and contract...</div>;
+
+    // 에러 해결 중
+    const fetch = async () => {
+        console.log(contract);
+
+        const candidateNumber = await contract.methods
+            .getCandidateNumber()
+            .call();
+        setCandidateNumber(candidateNumber);
+    };
+
+    const addCandidate = async (e) => {
+        console.log(accounts);
+        console.log(typeof accounts);
+        await contract.methods
+            .addCandidate(name)
+            .send({ from: accounts, gas: 5000000 });
+        setName("");
+        fetch();
+    };
+
+    const onNameChange = (e) => {
+        setName(e.target.value);
+    };
+
+    if (!web3) {
+        return (
+            <>
+                {loading ? (
+                    <div>Loading...</div>
+                ) : (
+                    <div>Loading Web3, accounts, and contract...</div>
+                )}
+            </>
+        );
+    } else {
+        return (
+            <>
+                {loading ? (
+                    <div>Loading...</div>
+                ) : (
+                    <>
+                        {candidateNumber}
+                        <input
+                            autoFocus
+                            value={name}
+                            onChange={onNameChange}
+                            placeholder={"이름을 입력해주세요."}
+                        />
+                        <button onClick={addCandidate}>Add</button>
+                    </>
+                )}
+            </>
+        );
     }
-    return (
-        <div className="App">
-            <h1>Good to Go!</h1>
-            <p>Your Truffle Box is installed and ready.</p>
-            <h2>Smart Contract Example</h2>
-            <p>
-                If your contracts compiled and migrated successfully, below will
-                show a stored value of 5 (by default).
-            </p>
-            <p>
-                Try changing the value stored on <strong>line 42</strong> of
-                App.js.
-            </p>
-            <div>The stored value is: {state.storageValue}</div>
-        </div>
-    );
 };
 
 export default Home;
-
-// export default class Home extends Component {
-//   state = { storageValue: 0, web3: null, accounts: null, contract: null };
-
-//   componentDidMount = async () => {
-//     try {
-//       // Get network provider and web3 instance.
-//       const web3 = await getWeb3();
-
-//       // Use web3 to get the user's accounts.
-//       const accounts = await web3.eth.getAccounts();
-
-//       // Get the contract instance.
-//       const networkId = await web3.eth.net.getId();
-//       const deployedNetwork = SimpleStorageContract.networks[networkId];
-//       const instance = new web3.eth.Contract(
-//         SimpleStorageContract.abi,
-//         deployedNetwork && deployedNetwork.address,
-//       );
-
-//       // Set web3, accounts, and contract to the state, and then proceed with an
-//       // example of interacting with the contract's methods.
-//       this.setState({ web3, accounts, contract: instance }, this.runExample);
-//     } catch (error) {
-//       // Catch any errors for any of the above operations.
-//       alert(
-//         `Failed to load web3, accounts, or contract. Check console for details.`,
-//       );
-//       console.error(error);
-//     }
-
-//   runExample = async () => {
-//     const { accounts, contract } = this.state;
-
-//     // Stores a given value, 5 by default.
-//     await contract.methods.set(5).send({ from: accounts[0] });
-
-//     // Get the value from the contract to prove it worked.
-//     const response = await contract.methods.get().call();
-
-//     // Update state with the result.
-//     this.setState({ storageValue: response });
-//   };
-
-//   render() {
-//     if (!this.state.web3) {
-//       return <div>Loading Web3, accounts, and contract...</div>;
-//     }
-//     return (
-//       <div className="App">
-//         <h1>Good to Go!</h1>
-//         <p>Your Truffle Box is installed and ready.</p>
-//         <h2>Smart Contract Example</h2>
-//         <p>
-//           If your contracts compiled and migrated successfully, below will show
-//           a stored value of 5 (by default).
-//         </p>
-//         <p>
-//           Try changing the value stored on <strong>line 42</strong> of App.js.
-//         </p>
-//         <div>The stored value is: {this.state.storageValue}</div>
-//       </div>
-//     );
-//   }
-// }
