@@ -1,13 +1,13 @@
-import React from 'react';
-import { AppBar, Box, Divider, Toolbar } from '@mui/material';
+import React from "react";
+import { AppBar, Box, Divider, Toolbar } from "@mui/material";
 
-import Header from './Header';
-import Sidebar from './Sidebar/sidebar';
-import { Outlet } from 'react-router-dom';
+import Header from "./Header";
+import Sidebar from "./Sidebar/sidebar";
+import { Outlet } from "react-router-dom";
 
 const MainLayout = () => {
     return (
-        <Box sx={{ display: 'inline-block', width: '100%' }}>
+        <Box sx={{ display: "inline-block", width: "100%" }}>
             {/* header */}
             <AppBar
                 enableColorOnDark
@@ -15,9 +15,9 @@ const MainLayout = () => {
                 color="inherit"
                 elevation={0}
             >
-                <Toolbar style={{ padding: 0, marginTop: "-5px" }} >
+                <Toolbar style={{ padding: 0, marginTop: "-5px" }}>
                     <Header />
-                    <Box  style={{ marginTop: "10px"}}>
+                    <Box style={{ marginTop: "10px" }}>
                         <Sidebar />
                     </Box>
                 </Toolbar>
@@ -25,7 +25,12 @@ const MainLayout = () => {
             </AppBar>
 
             {/* main content */}
-            <Box  style={{ marginLeft: "20px", marginTop: "100px"}}>
+            <Box
+                style={{
+                    marginLeft: "20px",
+                    marginTop: "100px",
+                }}
+            >
                 <Outlet />
             </Box>
         </Box>
