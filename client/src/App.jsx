@@ -5,16 +5,16 @@ import "./App.css";
 import electionContract from "./contracts/Voting.json";
 import getWeb3 from "./getWeb3";
 import MainLayout from "./layout";
-import Home from "./component/Home";
 import AddCandidate from "./component/addcandidate/AddCandidate";
 import Voting from "./component/voting";
-import Results from "./component/Results";
+import Results from "./component/results";
 
 const App = () => {
     const [web3, setWeb3] = useState({});
     const [accounts, setAccounts] = useState("");
     const [contract, setContract] = useState({});
     const [loading, setLoading] = useState(false);
+    const [stateNumber, setStateNumber] = useState([]);
 
     const fetchData = async () => {
         setLoading(true);
@@ -50,23 +50,35 @@ const App = () => {
         }
     };
 
+    const state = async () => {
+        const num = await contract.methods.state().call();
+        setStateNumber(num);
+    };
+
     useEffect(() => {
         fetchData();
     }, []);
+
+    useEffect(() => {
+        if (Object.keys(contract).length == 0) return;
+
+        state();
+    }, [contract])
+    
 
     const web3Data = {
         web3,
         accounts,
         contract,
         loading,
+        stateNumber,
     };
 
     return (
         <BrowserRouter>
             <Routes>
                 <Route path="/*" element={<MainLayout />}>
-                    <Route path="" element={<Home />} />
-                    <Route path="addcandidate" element={<AddCandidate web3Data={web3Data}/>} />
+                    <Route path="" element={<AddCandidate web3Data={web3Data}/>} />
                     <Route path="voting" element={<Voting web3Data={web3Data}/>} />
                     <Route path="results" element={<Results web3Data={web3Data}/>} />
                     <Route path="*" element={<NotFound />} />

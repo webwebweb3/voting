@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from "react";
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+import Typography from '@mui/material/Typography';
+import { Button, CardActionArea, CardActions } from '@mui/material';
 
-import { Button } from "@mui/material";
+import TotalRegisters from "../addcandidate/sections/TotalCandidate";
 
 const Voting = (props) => {
-    const { accounts, contract, loading } = props.web3Data;
+    const { accounts, contract, loading, stateNumber } = props.web3Data;
 
     const [candidateNumber, setCandidateNumber] = useState(0);
     const [candidateMember, setCandidateMember] = useState([]);
@@ -47,6 +52,7 @@ const Voting = (props) => {
         }
     }, [contract, candidateNumber]);
 
+
     const confirmVote = (id) => {
         // 진짜 선택할건지 문구?
         try {
@@ -67,34 +73,51 @@ const Voting = (props) => {
                 <div>Loading Web3, accounts, and contract...</div>
             ) : (
                 <>
-                    총 후보자 숫자 = {candidateNumber}
-                    <hr />
-                    <div>
+                    <h1>candidate</h1>
+                    <TotalRegisters totalcan={candidateNumber} />
+                    <div style={{ width: '100%', textAlign: 'center', marginTop: '50px' }}>
                         {candidateMember.map((candidate, index) => {
                             return (
-                            <>
-                                <div>
-                                    {parseInt(candidate.candidateId) + 1} 번
+                                <div style={{ display: "inline-block" }} key={candidate.candidateId}>
+                                    <Card sx={{ maxWidth: '300px', marginLeft: '20px' }}>
+                                        <CardActionArea>
+                                            <CardMedia
+                                            component="img"
+                                            height="140"
+                                            image={`https://avatars.dicebear.com/api/pixel-art/${candidate.candidateId}.svg`}
+                                            alt="green iguana"
+                                            />
+                                            <CardContent>
+                                            <Typography gutterBottom variant="h5" component="div">
+                                                기호 {parseInt(candidate.candidateId) + 1} 번 {candidate.name}
+                                            </Typography>
+                                            <Typography variant="body2" color="text.secondary">
+                                                {candidate.slogan}
+                                            </Typography>
+                                            <Typography variant="body2" color="text.secondary">
+                                                득표 : {candidate.voteCount}
+                                            </Typography>
+                                            </CardContent>
+                                        </CardActionArea>
+                                        <CardActions>
+                                            {stateNumber != 1 ? (
+                                                <Button variant="outlined" style={{ width: '100%' }} disabled>
+                                                    Disabled
+                                                </Button>
+                                            ) : (
+                                                <Button
+                                                    type="submit"
+                                                    color="secondary"
+                                                    variant="outlined"
+                                                    style={{ width: '100%' }}
+                                                    onClick={() => confirmVote(index)}
+                                                >
+                                                    Vote
+                                                </Button>
+                                            )}
+                                        </CardActions>
+                                    </Card>
                                 </div>
-                                <div>
-                                    이름 = {candidate.name}
-                                </div>
-                                <div>
-                                    슬로건 = {candidate.slogan}
-                                </div>
-                                <div>
-                                    투표수 = {candidate.voteCount}
-                                </div>
-                                <Button
-                                    type="submit"
-                                    color="secondary"
-                                    variant="contained"
-                                    onClick={() => confirmVote(index)}
-                                >
-                                    Vote
-                                </Button>
-                                <hr />
-                            </>
                             );
                         })}
                     </div>

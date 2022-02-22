@@ -9,7 +9,7 @@ import TotalRegisters from "./sections/TotalCandidate";
 import "./AddCandidate.css";
 
 const AddCandidate = (props) => {
-    const { accounts, contract, loading } = props.web3Data;
+    const { accounts, contract, loading, stateNumber } = props.web3Data;
 
     const [slogan, setSlogan] = useState("");
     const [candidateNumber, setCandidateNumber] = useState(0);
@@ -81,14 +81,20 @@ const AddCandidate = (props) => {
 
     const buttons = (
         <>
-            <Button
-                className="addCandidate_adding_btn"
-                type="submit"
-                color="secondary"
-                variant="contained"
-            >
-                Registration
-            </Button>
+            {stateNumber != 0 ? (
+                <Button variant="outlined" disabled>
+                    Disabled
+                </Button>
+            ) : (
+                <Button
+                    className="addCandidate_adding_btn"
+                    type="submit"
+                    color="secondary"
+                    variant="contained"
+                >
+                    Registration
+                </Button>
+            )}
         </>
     );
 
@@ -146,7 +152,7 @@ const AddCandidate = (props) => {
                                 </div>
                                 {candidateMember.map((candidate, index) => {
                                     return (
-                                        <>
+                                        <div key={candidate.candidateId}>
                                             <div className="addCandidate_status_bundle">
                                                 <div className="addCandidate_status_bundle_subtitle_name">
                                                     name
@@ -155,6 +161,9 @@ const AddCandidate = (props) => {
                                                     {candidate.name}
                                                 </div>
                                                 <div className="addCandidate_status_bundle_btn">
+                                                {stateNumber != 0 ? (
+                                                    <></>
+                                                ): (
                                                     <Button
                                                         className="addCandidate_status_cancel_btn"
                                                         onClick={() =>
@@ -165,6 +174,7 @@ const AddCandidate = (props) => {
                                                     >
                                                         cancel
                                                     </Button>
+                                                )}
                                                 </div>
                                                 <div className="addCandidate_status_bundle_subtitle_slogan">
                                                     slogan
@@ -173,7 +183,7 @@ const AddCandidate = (props) => {
                                                     {candidate.slogan}
                                                 </div>
                                             </div>
-                                        </>
+                                        </div>
                                     );
                                 })}
                             </div>

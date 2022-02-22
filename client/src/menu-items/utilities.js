@@ -20,23 +20,15 @@ const utilities = {
     type: "group",
     children: [
         {
-            id: "default",
-            title: "개요",
-            type: "item",
-            url: "",
-            icon: icons.IconHome,
-            breadcrumbs: false,
-        },
-        {
-            id: "util-Wallet",
+            id: "util-AddCandidate",
             title: "후보 등록",
             type: "item",
-            url: "/addcandidate",
+            url: "",
             icon: icons.IconUserPlus,
             breadcrumbs: false,
         },
         {
-            id: "util-Block",
+            id: "util-Voting",
             title: "투표",
             type: "item",
             url: "/voting",
@@ -44,7 +36,7 @@ const utilities = {
             breadcrumbs: false,
         },
         {
-            id: "util-peer",
+            id: "util-Results",
             title: "결과",
             type: "item",
             url: "/results",
