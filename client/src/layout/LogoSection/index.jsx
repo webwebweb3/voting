@@ -14,7 +14,7 @@ const LogoSection = () => (
                 width: "1em",
             }}
             alt="WebWebWeb"
-            src="favicon.ico"
+            src="logo.jpg"
         />
         <ListItemText
             sx={{
