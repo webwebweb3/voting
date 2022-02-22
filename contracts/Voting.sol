@@ -2,31 +2,54 @@
 pragma solidity >=0.4.21 <0.9.0;
 
 // CHS
-contract Ballot{
+contract Voting{
+    // uint256 candidateCount
+    uint256 candidateCount;
 
-    // VARIABLES
-    struct vote {
-        address voterAddress;
-        bool choice;
-    }
-
-    struct voter {
-        string voterName;
-        bool voted;
-    }
-
-    uint private countResult = 0;
-    uint public finalResult = 0;
-    uint public totalVoter = 0;
-    uint public totalVote = 0;
+    // uint256 voterCount
+    uint256 voterCount;
 
     address public ballotOfficialAddress;
     string public ballotOfficialName;
     string public proposal;
 
-    mapping(uint => vote) private votes;
-    mapping(address => voter) public voterRegister;
 
+    mapping (address => uint256) public candidate;
+    mapping (address => bool) public votetest;
+
+    // constructor()
+    constructor(
+        string memory _ballotOfficialName,
+        string memory _proposal
+    )
+    public
+    {
+        candidateCount = 0;
+        voterCount = 0;
+        votetest[msg.sender] = false;
+        ballotOfficialAddress = msg.sender;
+        ballotOfficialName = _ballotOfficialName;
+        proposal = _proposal;
+
+        state = State.Created;
+    }
+
+    // VARIABLES
+    // struct Voter { address voterAddress; bool hasVoted; }
+    struct Voter {
+        address voterAddress;
+        bool hasVoted;
+    }
+
+    // struct Candidate { uint256 candidateId; string name; uint256 voteCount; }
+    struct Candidate {
+        uint256 candidateId;
+        string name;
+        string slogan;
+        uint256 voteCount;
+    }
+
+    // enum State { Created, Voting, Ended }
     enum State { 
         Created,
         Voting,
@@ -34,80 +57,53 @@ contract Ballot{
     }
     State public state;
 
-    // MODIFIERS
-    modifier condition(bool _condition){
-        require(_condition);
+    // mapping (uint256 => Candidate) candidateDetails;
+    mapping(uint256 => Candidate) public candidateDetails;
+    
+    // mapping (address=>bool) hasVoted;
+    /* mapping (address => bool) public hasVoted; */
+
+    /* MODIFIERS */
+    // modifier onlyCandidater()
+    modifier onlyCandidater(){
+        require(candidate[msg.sender] < 1);
         _;
     }
-    modifier onlyOfficial(){
-        require(msg.sender == ballotOfficialAddress);
-        _;
-    }
+
+    // modifier inState()
     modifier inState(State _state){
         require(state == _state);
         _;
     }
-    // EVENTS
 
-    // FUNCTIONS
-    constructor(
-        string memory _ballotOfficialName,
-        string memory _proposal
-    )
-    public
-    {
-        ballotOfficialAddress = msg.sender;
-        ballotOfficialName = _ballotOfficialName;
-        proposal = _proposal;
+    /* FUNCTIONS */
+    // addCandidate()
+    function addCandidate(string memory _name, string memory _slogan) public onlyCandidater {
+        require(candidateCount < 5);
+        Candidate memory newCandidate =
+            Candidate({
+                candidateId: candidateCount,
+                name: _name,
+                slogan: _slogan,
+                voteCount: 0
+            });
+        candidateDetails[candidateCount] = newCandidate;
+        candidateCount += 1;
+        candidate[msg.sender]++;
+    }
 
-        state = State.Created;
+    // getCandidateNumber()
+    function getCandidateNumber() public view returns (uint256) {
+        return candidateCount;
     }
-    function addVoter(address _voterAddress, string memory _voterName)
-        public
-        inState(State.Created)
-        onlyOfficial
-    {
-        voter memory v;
-        require(bytes(v.voterName).length != 0);
-        v.voterName = _voterName;
-        v.voted = false;
-        voterRegister[_voterAddress] = v;
-        totalVoter++;
+
+    // Vote()
+    function vote(uint256 candidateId) public {
+        require(votetest[msg.sender] == false);
+        // require(start == true);
+        // require(end == false);
+        candidateDetails[candidateId].voteCount += 1;
+        votetest[msg.sender] = true;
     }
-    function startVote()
-        public
-        inState(State.Created)
-        onlyOfficial
-    {
-        state = State.Voting;
-    }
-    function doVote(bool _choice)
-        public
-        inState(State.Voting)
-        returns (bool voted)
-    {
-        bool found = false;
-        if (bytes(voterRegister[msg.sender].voterName).length != 0
-        && !voterRegister[msg.sender].voted){
-            voterRegister[msg.sender].voted =true;
-            vote memory v; 
-            v.voterAddress = msg.sender;
-            v.choice = _choice;
-            if(_choice){
-                countResult++;
-            }
-            votes[totalVote] = v;
-            totalVote++;
-            found = true;
-        }
-        return found;
-    }
-    function endVote()
-        public
-        inState(State.Voting)
-        onlyOfficial
-    {
-        state = State.Ended;
-        finalResult = countResult;
-    }
+    // endVote()
 }

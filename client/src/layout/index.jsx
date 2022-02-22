@@ -7,7 +7,7 @@ import { Outlet } from "react-router-dom";
 
 const MainLayout = () => {
     return (
-        <Box sx={{ width: "100%", display: "inline-block" }}>
+        <Box sx={{ display: "inline-block", width: "100%" }}>
             {/* header */}
             <AppBar
                 enableColorOnDark
