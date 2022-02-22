@@ -25,7 +25,7 @@ contract Elect {
     uint8 candidateTotalCount;
     uint8 voterTotalCount;
 
-    constructor(){
+    constructor()public{
         candidateTotalCount = 0;
         voterTotalCount = 0;
     }
@@ -88,17 +88,17 @@ contract Elect {
         }
     }
 
-    function winningVote() 
-        public 
-        view 
-        returns(uint _winningVote)
-    {
-        uint winningVoteCount = 5;
-        for(uint p = 0; p < bytes(candidateDetails.length); p++){
-            if(candidateDetails[p].voteCount >= winningVoteCount){
-                winningVoteCount = candidateDetails[p].voteCount;
-                _winningVote = p;
-            }
-        }
-    }
+    // function winningVote() 
+    //     public 
+    //     view 
+    //     returns(uint _winningVote)
+    // {
+    //     uint winningVoteCount = 5;
+    //     for(uint p = 0; p < bytes(candidateDetails.length); p++){
+    //         if(candidateDetails[p].voteCount >= winningVoteCount){
+    //             winningVoteCount = candidateDetails[p].voteCount;
+    //             _winningVote = p;
+    //         }
+    //     }
+    // }
 }

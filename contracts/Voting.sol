@@ -5,31 +5,25 @@ pragma solidity >=0.4.21 <0.9.0;
 contract Voting{
     // uint256 candidateCount
     uint256 candidateCount;
-
     // uint256 voterCount
     uint256 voterCount;
 
-    address public ballotOfficialAddress;
-    string public ballotOfficialName;
-    string public proposal;
+    // mapping (uint256 => Candidate) candidateDetails;
+    mapping (uint256 => Candidate)  public candidateDetails;
+    mapping (address => uint256)    public candidate;
+    mapping (address => bool)       public votetest;
 
-
-    mapping (address => uint256) public candidate;
-    mapping (address => bool) public votetest;
+    State public state;
+    // candidateDetails mapping을 배열로 넣어서 리스트화
+    uint256[] internal candidateList;
 
     // constructor()
-    constructor(
-        string memory _ballotOfficialName,
-        string memory _proposal
-    )
+    constructor()
     public
     {
         candidateCount = 0;
         voterCount = 0;
         votetest[msg.sender] = false;
-        ballotOfficialAddress = msg.sender;
-        ballotOfficialName = _ballotOfficialName;
-        proposal = _proposal;
 
         state = State.Created;
     }
@@ -47,6 +41,7 @@ contract Voting{
         string name;
         string slogan;
         uint256 voteCount;
+        address candidateAddress;
     }
 
     // enum State { Created, Voting, Ended }
@@ -55,10 +50,6 @@ contract Voting{
         Voting,
         Ended
     }
-    State public state;
-
-    // mapping (uint256 => Candidate) candidateDetails;
-    mapping(uint256 => Candidate) public candidateDetails;
     
     // mapping (address=>bool) hasVoted;
     /* mapping (address => bool) public hasVoted; */
@@ -67,6 +58,10 @@ contract Voting{
     // modifier onlyCandidater()
     modifier onlyCandidater(){
         require(candidate[msg.sender] < 1);
+        _;
+    }
+    modifier onlyMe(address _candidate){
+        require(msg.sender == _candidate);
         _;
     }
 
@@ -78,18 +73,47 @@ contract Voting{
 
     /* FUNCTIONS */
     // addCandidate()
-    function addCandidate(string memory _name, string memory _slogan) public onlyCandidater {
+    function addCandidate(string memory _name, string memory _slogan) 
+        public 
+        onlyCandidater
+        inState(State.Created)
+    {
         require(candidateCount < 5);
         Candidate memory newCandidate =
             Candidate({
                 candidateId: candidateCount,
                 name: _name,
                 slogan: _slogan,
-                voteCount: 0
+                voteCount: 0,
+                candidateAddress: msg.sender
             });
         candidateDetails[candidateCount] = newCandidate;
-        candidateCount += 1;
+        candidateList.push(candidateCount);
+        candidateCount++;
         candidate[msg.sender]++;
+
+        if(candidateCount >= 5){
+            startVote();
+        }
+    }
+
+    function deleteCandidate(uint256 _candidateId) 
+        public 
+        onlyMe(candidateDetails[_candidateId].candidateAddress)
+        inState(State.Created)
+    {
+        delete candidateDetails[_candidateId];
+        // delete candidateList[_candidateId];
+        candidateList.pop();
+        candidate[msg.sender]--;
+        candidateCount--;
+    }
+
+    function startVote()
+        private
+        inState(State.Created)
+    {
+        state = State.Voting;
     }
 
     // getCandidateNumber()
@@ -97,13 +121,52 @@ contract Voting{
         return candidateCount;
     }
 
+
     // Vote()
-    function vote(uint256 candidateId) public {
+    function vote(uint256 candidateId) 
+        public 
+        inState(State.Voting)
+    {
         require(votetest[msg.sender] == false);
         // require(start == true);
         // require(end == false);
         candidateDetails[candidateId].voteCount += 1;
         votetest[msg.sender] = true;
+        (, bool checkEnd) =  winningVote();
+        if(checkEnd){
+            endVote();
+        }
     }
+
     // endVote()
+    function sizeOfCandidate() 
+        public 
+        view 
+        returns (uint256)
+    {
+        return uint256(candidateList.length);
+    }
+
+    function winningVote()
+        public
+        view
+        returns(uint _winningVote, bool)
+    {
+        uint winningVoteCount=5;
+        for(uint p = 0; p < sizeOfCandidate(); p++){
+            if(candidateDetails[p].voteCount >= winningVoteCount){
+                winningVoteCount = candidateDetails[p].voteCount;
+                _winningVote = p;
+                return (_winningVote, true);
+            }
+        }
+        return (_winningVote, false);
+    }
+
+    function endVote()
+        private
+        inState(State.Voting)
+    {
+        state = State.Ended;
+    }
 }
