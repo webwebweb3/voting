@@ -1,6 +1,6 @@
 import { TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import electionContract from "../contracts/Election.json";
+import electionContract from "../contracts/Voting.json";
 import getWeb3 from "../getWeb3";
 
 const Home = () => {
@@ -11,11 +11,11 @@ const Home = () => {
     const [name, setName] = useState("");
     const [loading, setLoading] = useState(false);
 
-  const fetchData = async () => {
-    setLoading(true);
-    try {
-      // Get network provider and web3 instance.
-      const web3 = await getWeb3();
+    const fetchData = async () => {
+        setLoading(true);
+        try {
+            // Get network provider and web3 instance.
+            const web3 = await getWeb3();
 
             // Use web3 to get the user's accounts.
             const accounts = await web3.eth.getAccounts();
