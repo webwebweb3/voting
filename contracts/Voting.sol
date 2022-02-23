@@ -14,6 +14,7 @@ contract Voting{
     mapping (address => bool)       public votetest;
 
     State public state;
+    Candidate public winner;
     // candidateDetails mapping을 배열로 넣어서 리스트화
     uint256[] internal candidateList;
 
@@ -42,8 +43,9 @@ contract Voting{
         string slogan;
         uint256 voteCount;
         address candidateAddress;
+        // bool isWinner; // winner = true; looser = false;
     }
-
+    
     // enum State { Created, Voting, Ended }
     enum State { 
         Created,
@@ -132,9 +134,9 @@ contract Voting{
         // require(end == false);
         candidateDetails[candidateId].voteCount += 1;
         votetest[msg.sender] = true;
-        (, bool checkEnd) =  winningVote();
+        (uint winnerCandi, bool checkEnd) =  winningVote();
         if(checkEnd){
-            endVote();
+            winner = endVote(winnerCandi);
         }
     }
 
@@ -163,10 +165,13 @@ contract Voting{
         return (_winningVote, false);
     }
 
-    function endVote()
+    function endVote(uint _winnerCandi)
         private
         inState(State.Voting)
+        returns (Candidate memory _winner)
     {
         state = State.Ended;
+        _winner = candidateDetails[_winnerCandi];
+        return _winner;
     }
 }
