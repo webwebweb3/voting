@@ -7,28 +7,26 @@ import { CardActionArea } from "@mui/material";
 import "./result.css";
 
 const Results = (props) => {
-    const { accounts, contract, loading, stateNumber } = props.web3Data;
+    const { contract } = props.web3Data;
     const [winner, setWinner] = useState({});
 
     const fetchWinner = async () => {
         const candidate = await contract.methods.winner().call();
-        console.log("캔디", candidate);
         setWinner(candidate);
     };
 
-    useEffect(async () => {
-        if (Object.keys(contract).length == 0) return;
+    useEffect(() => {
+        if (Object.keys(contract).length === 0) return;
 
         try {
             fetchWinner();
-            console.log(winner);
         } catch (error) {
             alert(`Failed.`);
             console.error(error);
         }
-    }, [contract]);
+    }, [contract, winner]);
 
-    if (winner.name == "") {
+    if (winner.name === "") {
         return <h1>Voting...</h1>;
     } else {
         return (

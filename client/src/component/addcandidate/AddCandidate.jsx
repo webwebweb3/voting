@@ -35,8 +35,8 @@ const AddCandidate = (props) => {
     };
 
     useEffect(() => {
-        if (Object.keys(contract).length == 0) return;
-
+        if (Object.keys(contract).length === 0) return;
+        
         try {
             fetch();
             fetchCandidate();
@@ -81,7 +81,7 @@ const AddCandidate = (props) => {
 
     const buttons = (
         <>
-            {stateNumber != 0 ? (
+            {stateNumber !== 0 ? (
                 <Button variant="outlined" disabled>
                     Disabled
                 </Button>
@@ -161,7 +161,7 @@ const AddCandidate = (props) => {
                                                     {candidate.name}
                                                 </div>
                                                 <div className="addCandidate_status_bundle_btn">
-                                                {stateNumber != 0 ? (
+                                                {stateNumber !== 0 ? (
                                                     <></>
                                                 ): (
                                                     <Button
@@ -189,8 +189,6 @@ const AddCandidate = (props) => {
                             </div>
                         </Paper>
                     </Box>
-
-                    {/* <StatusCandidate candidateMember={candidateMember} /> */}
                 </>
             )}
         </>
