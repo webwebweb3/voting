@@ -60,7 +60,7 @@ const App = () => {
     }, []);
 
     useEffect(() => {
-        if (Object.keys(contract).length == 0) return;
+        if (Object.keys(contract).length === 0) return;
 
         state();
     }, [contract])

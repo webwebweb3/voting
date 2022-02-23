@@ -6,7 +6,6 @@ import Typography from "@mui/material/Typography";
 import { Button, CardActionArea, CardActions } from "@mui/material";
 
 import TotalRegisters from "../addcandidate/sections/TotalCandidate";
-import { display } from "@mui/system";
 
 const Voting = (props) => {
     const { accounts, contract, loading, stateNumber } = props.web3Data;
@@ -38,7 +37,7 @@ const Voting = (props) => {
     };
 
     useEffect(() => {
-        if (Object.keys(contract).length == 0) return;
+        if (Object.keys(contract).length === 0) return;
 
         try {
             fetch();
@@ -122,7 +121,7 @@ const Voting = (props) => {
                                             </CardContent>
                                         </CardActionArea>
                                         <CardActions>
-                                            {stateNumber != 1 ? (
+                                            {stateNumber !== 1 ? (
                                                 <Button
                                                     variant="outlined"
                                                     style={{ width: "100%" }}
