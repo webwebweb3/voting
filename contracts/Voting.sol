@@ -104,7 +104,19 @@ contract Voting{
         onlyMe(candidateDetails[_candidateId].candidateAddress)
         inState(State.Created)
     {
-        delete candidateDetails[_candidateId];
+        if(candidateDetails[_candidateId].candidateId+1== candidateCount){
+            delete candidateDetails[_candidateId];
+        } else {
+            Candidate memory c = Candidate({
+                candidateId: candidateDetails[sizeOfCandidate()-1].candidateId,
+                name: candidateDetails[sizeOfCandidate()-1].name,
+                slogan: candidateDetails[sizeOfCandidate()-1].slogan,
+                voteCount: candidateDetails[sizeOfCandidate()-1].voteCount,
+                candidateAddress: candidateDetails[sizeOfCandidate()-1].candidateAddress
+            });
+            candidateDetails[_candidateId] = c;
+            delete candidateDetails[sizeOfCandidate()-1];
+        }
         // delete candidateList[_candidateId];
         candidateList.pop();
         candidate[msg.sender]--;
