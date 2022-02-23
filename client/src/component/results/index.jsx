@@ -35,7 +35,6 @@ const Results = (props) => {
             <>
                 <h1>당선을 축하합니다!</h1>
                 <div
-                    style={{ display: "inline-block" }}
                     key={winner.candidateId}
                     className="result_container"
                 >
@@ -44,6 +43,8 @@ const Results = (props) => {
                             {
                                 // maxWidth: "300px",
                                 // marginLeft: "20px",
+                                display: "inline-block",
+                                textAlign: "center"
                             }
                         }
                         className="result_card"
