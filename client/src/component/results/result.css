@@ -1,0 +1,8 @@
+.result_container {
+    margin: 0 auto !important;
+    height: 500px;
+    text-align: center;
+}
+.result_card {
+    margin: 0 auto;
+}
