@@ -6,6 +6,7 @@ import Typography from "@mui/material/Typography";
 import { Button, CardActionArea, CardActions } from "@mui/material";
 
 import TotalRegisters from "../addcandidate/sections/TotalCandidate";
+import { display } from "@mui/system";
 
 const Voting = (props) => {
     const { accounts, contract, loading, stateNumber } = props.web3Data;
@@ -80,7 +81,7 @@ const Voting = (props) => {
                     >
                         {candidateMember.map((candidate, index) => {
                             return (
-                                <div key={candidate.candidateId}>
+                                <div style={{ display: "inline-block" }} key={candidate.candidateId}>
                                     <Card
                                         sx={{
                                             maxWidth: "300px",
