@@ -2,8 +2,6 @@ import {
     IconUserCheck,
     IconUserPlus,
     IconFileText,
-    IconHome,
-    IconWallet,
 } from "@tabler/icons";
 
 /* Sidebar - Link, Icon, Title */
@@ -12,8 +10,6 @@ const icons = {
     IconUserCheck,
     IconUserPlus,
     IconFileText,
-    IconHome,
-    IconWallet,
 };
 
 const utilities = {
@@ -43,14 +39,6 @@ const utilities = {
             type: "item",
             url: "/results",
             icon: icons.IconFileText,
-            breadcrumbs: false,
-        },
-        {
-            id: "util-Test",
-            title: "실험!",
-            type: "item",
-            url: "/test",
-            icon: icons.IconWallet,
             breadcrumbs: false,
         },
     ],
