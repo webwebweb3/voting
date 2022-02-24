@@ -19,7 +19,7 @@
 
 1.  Ganache 를 설치하고 작업 공간을 만듭니다.
 2.  `npm install -g truffle` 명령어를 입력하여 Truffle npm 패키지를 전역으로 설치합니다 .
-3.  `truffle migrate --reset` 하여 스마트 계약을 블록체인에 배포합니다.
+3.  `truffle migrate --reset` 명령어를 입력하여 스마트 계약을 블록체인에 배포합니다.
 4.  브라우저용 Metamask Chrome 확장 프로그램을 다운로드하여 애플리케이션과 블록체인 간의 상호 작용을 돕습니다.
 
 ### 애플리케이션 실행
