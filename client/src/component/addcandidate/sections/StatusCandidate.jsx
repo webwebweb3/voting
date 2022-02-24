@@ -2,20 +2,19 @@ import React, { useEffect, useState } from "react";
 
 const StatusCandidate = (props) => {
     const [candiMem, setCandiMem] = useState([]);
-    console.log("pp", props);
+
     const fetchData = () => {
         let candidateArray = [];
         for (let i = 0; i <= props.candidateMember.length; i++) {
             candidateArray.push(props.candidateMember[i]);
         }
-        console.log("캔디어레이", candidateArray);
         setCandiMem(candiMem);
     };
+
     useEffect(() => {
         if (props.candidateMember.length == 0) return;
         try {
             fetchData();
-            console.log("패치?");
         } catch (error) {
             console.log(error);
         }

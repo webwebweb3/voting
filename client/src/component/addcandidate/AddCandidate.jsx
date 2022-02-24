@@ -2,7 +2,6 @@ import { TextField } from "@mui/material";
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { Button } from "@mui/material";
-// import StatusCandidate from "./sections/StatusCandidate";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import TotalRegisters from "./sections/TotalCandidate";
@@ -81,7 +80,7 @@ const AddCandidate = (props) => {
 
     const buttons = (
         <>
-            {stateNumber !== 0 ? (
+            {stateNumber != 0 ? (
                 <Button variant="outlined" disabled>
                     Disabled
                 </Button>
@@ -131,6 +130,7 @@ const AddCandidate = (props) => {
                                     label="slogan"
                                     variant="standard"
                                     name="slogan"
+                                    value={slogan}
                                     sx={{ width: 800 }}
                                     onChange={onSloganChange}
                                 />
@@ -161,7 +161,7 @@ const AddCandidate = (props) => {
                                                     {candidate.name}
                                                 </div>
                                                 <div className="addCandidate_status_bundle_btn">
-                                                {stateNumber !== 0 ? (
+                                                {stateNumber != 0 ? (
                                                     <></>
                                                 ): (
                                                     <Button

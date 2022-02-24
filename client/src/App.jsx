@@ -8,7 +8,6 @@ import MainLayout from "./layout";
 import AddCandidate from "./component/addcandidate/AddCandidate";
 import Voting from "./component/voting";
 import Results from "./component/results";
-import Tests from "./component/tests";
 
 const App = () => {
     const [web3, setWeb3] = useState({});
@@ -82,7 +81,6 @@ const App = () => {
                     <Route path="" element={<AddCandidate web3Data={web3Data}/>} />
                     <Route path="voting" element={<Voting web3Data={web3Data}/>} />
                     <Route path="results" element={<Results web3Data={web3Data}/>} />
-                    <Route path="test" element={<Tests web3Data={web3Data}/>} />
                     <Route path="*" element={<NotFound />} />
                 </Route>
             </Routes>

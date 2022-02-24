@@ -5,7 +5,6 @@ import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import { CardActionArea } from "@mui/material";
 import "./result.css";
-import Tests from "../tests";
 
 const Results = (props) => {
     const { contract } = props.web3Data;
@@ -79,7 +78,6 @@ const Results = (props) => {
                             </CardContent>
                         </CardActionArea>
                     </Card>
-                    <Tests />
                 </div>
             </>
         );

@@ -42,7 +42,6 @@ const Voting = (props) => {
         try {
             fetch();
             fetchCandidate();
-            console.log(contract);
         } catch (error) {
             alert(`Failed.`);
             console.error(error);
@@ -50,7 +49,6 @@ const Voting = (props) => {
     }, [contract, candidateNumber]);
 
     const confirmVote = (id) => {
-        // 진짜 선택할건지 문구?
         try {
             fetchVote(id);
             fetchCandidate();
@@ -121,7 +119,7 @@ const Voting = (props) => {
                                             </CardContent>
                                         </CardActionArea>
                                         <CardActions>
-                                            {stateNumber !== 1 ? (
+                                            {stateNumber != 1 ? (
                                                 <Button
                                                     variant="outlined"
                                                     style={{ width: "100%" }}
