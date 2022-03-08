@@ -69,7 +69,7 @@ const Voting = (props) => {
                 <div>Loading Web3, accounts, and contract...</div>
             ) : (
                 <>
-                    <h1>candidate</h1>
+                    <h1>candidatgge</h1>
                     <TotalRegisters totalcan={candidateNumber} />
                     <div
                         style={{
@@ -80,7 +80,10 @@ const Voting = (props) => {
                     >
                         {candidateMember.map((candidate, index) => {
                             return (
-                                <div style={{ display: "inline-block" }} key={candidate.candidateId}>
+                                <div
+                                    style={{ display: "inline-block" }}
+                                    key={candidate.candidateId}
+                                >
                                     <Card
                                         sx={{
                                             maxWidth: "300px",
