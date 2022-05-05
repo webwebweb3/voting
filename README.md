@@ -15,7 +15,7 @@
 
 ## 개발 환경
 
- Node.js, npm, React.js, Web3.js, Ganache-cli, Truffle, Solidity, MongoDB, Metamask
+ Node.js, npm, React.js, Web3.js, Ganache-cli, Truffle, Solidity, Metamask
 
 ## 실행 방법
 
