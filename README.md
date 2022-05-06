@@ -31,3 +31,7 @@
 cd client
 yarn start
 ```
+
+# Contract Diagram
+##### * 사진을 클릭하면 크게 자세히 볼 수 있어요!!!
+<img src="https://user-images.githubusercontent.com/89543695/167062923-50afbbb5-59c5-45c1-ba83-984c1261884d.png" width="470px" hight="610px" title="px(픽셀) 크기 설정" alt="RubberDuck"></img>
